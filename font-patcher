@@ -325,6 +325,8 @@ class font_patcher:
             if self.args.single:
                 familyname += " Mono"
 
+        psfamilyname = fontname
+
         # Don't truncate the subfamily to keep fontname unique.  MacOS treats fonts with
         # the same name as the same font, even if subFamily is different.
         fontname += '-' + subFamily.replace(" ", "")
@@ -394,14 +396,19 @@ class font_patcher:
         fontname   = replace_font_name(fontname,   additionalFontNameReplacements2)
 
         # replace any extra whitespace characters:
-        self.sourceFont.familyname = " ".join(familyname.split())
-        self.sourceFont.fullname   = " ".join(fullname.split())
-        self.sourceFont.fontname   = " ".join(fontname.split())
+        familyname = " ".join(familyname.split())
+        fullname = " ".join(fullname.split())
+        fontname = " ".join(fontname.split())
 
-        self.sourceFont.appendSFNTName(str('English (US)'), str('Preferred Family'), self.sourceFont.familyname)
-        self.sourceFont.appendSFNTName(str('English (US)'), str('Family'), self.sourceFont.familyname)
-        self.sourceFont.appendSFNTName(str('English (US)'), str('Compatible Full'), self.sourceFont.fullname)
+        self.sourceFont.familyname = psfamilyname
+        self.sourceFont.fullname   = fullname
+        self.sourceFont.fontname   = fontname
+
+        self.sourceFont.appendSFNTName(str('English (US)'), str('Preferred Family'), familyname)
+        self.sourceFont.appendSFNTName(str('English (US)'), str('Family'), familyname)
+        self.sourceFont.appendSFNTName(str('English (US)'), str('Compatible Full'), fullname)
         self.sourceFont.appendSFNTName(str('English (US)'), str('SubFamily'), subFamily)
+
         self.sourceFont.comment = projectInfo
         self.sourceFont.fontlog = projectInfo
 
