@@ -327,7 +327,7 @@ class font_patcher:
 
         # Don't truncate the subfamily to keep fontname unique.  MacOS treats fonts with
         # the same name as the same font, even if subFamily is different.
-        fontname += '-' + subFamily
+        fontname += '-' + subFamily.replace(" ", "")
 
         # rename font
         #
